@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YCL Gallery (01–27) &amp; Past Winners Archive</title>
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --surface: #141821;
+      --surface-2: #1c2230;
+      --border: #283044;
+      --text: #eef2ff;
+      --muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --gold: #f59e0b;
+      --gold-soft: rgba(245, 158, 11, 0.14);
+      --emerald: #10b981;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.55;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(11, 13, 18, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+
+    .header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .badge {
+      font-size: 0.76rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-pill {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+
+    .nav-pill:hover {
+      color: var(--text);
+      background: var(--surface-2);
+      border-color: var(--border);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button, .btn {
+      appearance: none;
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+
+    button:hover, .btn:hover {
+      background: #252d40;
+      border-color: #3b4766;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .jump-box {
+      display: flex;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px 6px;
+    }
+
+    .jump-box input {
+      width: 68px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      padding: 5px 6px;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .jump-box span {
+      color: var(--muted);
+      font-size: 0.8rem;
+      padding-left: 4px;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    section {
+      scroll-margin-top: 84px;
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 0.94rem;
+      max-width: 820px;
+      margin-top: 6px;
+    }
+
+    /* Gallery Grid & List */
+    .gallery.grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 16px;
+    }
+
+    .gallery.list-view {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .card:hover, .card:focus-visible {
+      border-color: var(--accent);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .list-view .card {
+      flex-direction: row;
+      align-items: center;
+      padding: 10px;
+      gap: 16px;
+    }
+
+    .thumb-wrap {
+      position: relative;
+      background: #07090d;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .list-view .thumb-wrap {
+      width: 180px;
+      min-width: 180px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .list-view .card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .list-view .thumb-wrap {
+        width: 100%;
+      }
+    }
+
+    .thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease, opacity 0.25s ease;
+    }
+
+    .card:hover .thumb-wrap img {
+      transform: scale(1.04);
+    }
+
+    .num-pill {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(11, 13, 18, 0.8);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      z-index: 2;
+    }
+
+    .card-overlay-actions {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
+      gap: 6px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 2;
+    }
+
+    .card:hover .card-overlay-actions,
+    .card:focus-within .card-overlay-actions {
+      opacity: 1;
+    }
+
+    .icon-btn {
+      padding: 6px 9px;
+      font-size: 0.8rem;
+      background: rgba(11, 13, 18, 0.85);
+      backdrop-filter: blur(6px);
+    }
+
+    .card-body {
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .list-view .card-body {
+      padding: 4px 8px;
+    }
+
+    .card-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 0.94rem;
+      font-weight: 600;
+    }
+
+    .card-url {
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      text-decoration: none;
+    }
+
+    .card-url:hover {
+      color: var(--accent-hover);
+      text-decoration: underline;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .error-state {
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+      padding: 16px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .thumb-wrap.is-error img {
+      display: none;
+    }
+
+    .thumb-wrap.is-error .error-state {
+      display: flex;
+    }
+
+    /* Winners Section */
+    .winners-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    .winner-card {
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.06) 0%, var(--surface) 45%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .winner-card:hover {
+      border-color: rgba(245, 158, 11, 0.55);
+      transform: translateY(-2px);
+    }
+
+    .winner-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .winner-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fbbf24;
+      background: var(--gold-soft);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .winner-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .winner-desc {
+      color: #cbd5e1;
+      font-size: 0.92rem;
+      flex: 1;
+    }
+
+    .winner-meta {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.85rem;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .meta-label {
+      color: var(--muted);
+      font-weight: 600;
+      min-width: 66px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* 2025 Notable Projects Section */
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 12px;
+      min-width: 260px;
+    }
+
+    .search-box input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+      width: 100%;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .project-tag {
+      align-self: flex-start;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.14);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 2px 9px;
+      border-radius: 999px;
+    }
+
+    .project-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .project-card p {
+      color: var(--muted);
+      font-size: 0.89rem;
+    }
+
+    .indexed-wrap {
+      margin-top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+
+    .indexed-wrap h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(5, 7, 10, 0.96);
+      display: none;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lb-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent);
+      z-index: 10;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .lb-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .lb-meta small {
+      color: var(--muted);
+      font-weight: 400;
+      font-size: 0.82rem;
+    }
+
+    .lb-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .lb-stage {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 12px 64px;
+    }
+
+    @media (max-width: 640px) {
+      .lb-stage {
+        padding: 12px;
+      }
+    }
+
+    .lb-stage img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+      cursor: zoom-in;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    .lb-stage img.zoomed {
+      cursor: zoom-out;
+    }
+
+    .lb-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 58px;
+      border-radius: 10px;
+      font-size: 1.4rem;
+      justify-content: center;
+      background: rgba(20, 24, 33, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      z-index: 5;
+    }
+
+    .lb-nav:hover {
+      background: rgba(99, 102, 241, 0.85);
+    }
+
+    .lb-prev { left: 14px; }
+    .lb-next { right: 14px; }
+
+    .lb-strip {
+      display: flex;
+      gap: 6px;
+      padding: 10px 16px;
+      overflow-x: auto;
+      background: rgba(11, 13, 18, 0.9);
+      border-top: 1px solid var(--border);
+      scrollbar-width: thin;
+    }
+
+    .lb-thumb {
+      width: 56px;
+      height: 38px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: opacity 0.15s, border-color 0.15s, transform 0.15s;
+      background: #000;
+    }
+
+    .lb-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .lb-thumb.active {
+      opacity: 1;
+      border-color: var(--accent);
+      transform: scale(1.06);
+    }
+
+    /* Shortcuts Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      max-width: 560px;
+      width: 100%;
+      padding: 22px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .shortcut-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 16px;
+    }
+
+    @media (max-width: 520px) {
+      .shortcut-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .shortcut-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.86rem;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    kbd {
+      background: var(--surface-2);
+      border: 1px solid #3c4866;
+      border-bottom-width: 2px;
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.76rem;
+      color: var(--text);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 200;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1>YCL Gallery &amp; Archive</h1>
+        <span class="badge">01 – 27</span>
+        <nav class="nav-links" aria-label="Page sections">
+          <a class="nav-pill" href="#gallery-section">Photos (1–27)</a>
+          <a class="nav-pill" href="#winners-section">🎖️ Winners</a>
+          <a class="nav-pill" href="#projects-section">YCL 2025 Projects</a>
+        </nav>
+      </div>
+
+      <div class="controls">
+        <div class="jump-box" title="Press / to focus, Enter to open">
+          <span>#</span>
+          <input id="jumpInput" type="number" min="1" max="27" placeholder="01–27" aria-label="Jump to image number" />
+        </div>
+
+        <button id="gridBtn" class="active" title="Grid View (G)">⊞ Grid</button>
+        <button id="listBtn" title="List View (L)">☰ List</button>
+        <button id="slideshowStartBtn" title="Start Slideshow (P)">▶ Slideshow</button>
+        <button id="fullscreenBtn" title="Toggle Fullscreen (F)">⛶ Fullscreen</button>
+        <button id="helpBtn" title="Keyboard Shortcuts (?)">⌨ Shortcuts</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Section 1: Gallery -->
+    <section id="gallery-section">
+      <div class="section-head">
+        <div>
+          <h2>📸 YCL Exhibition Photo Gallery</h2>
+          <p class="section-subtitle">
+            All 27 gallery photos (<code>ycl-01.jpg</code> – <code>ycl-27.jpg</code>). Click any photo to view, zoom, start a slideshow, or open true fullscreen.
+          </p>
+        </div>
+      </div>
+      <div id="gallery" class="gallery grid-view"></div>
+    </section>
+
+    <!-- Section 2: YCL Grand Exhibition Winners -->
+    <section id="winners-section">
+      <div class="section-head">
+        <div>
+          <h2>🎖️ YCL Grand Exhibition Winners</h2>
+          <p class="section-subtitle">
+            This year’s YCL grand exhibition was an amazing display of innovations to tackle real-world problems in unique and inspiring ways. The winners stood out for their creativity, impact and practicality.
+          </p>
+        </div>
+      </div>
+      <div id="winnersGrid" class="winners-grid"></div>
+    </section>
+
+    <!-- Section 3: Notable & Showcased YCL 2025 Projects -->
+    <section id="projects-section">
+      <div class="section-head">
+        <div>
+          <h2>🚀 Notable &amp; Showcased YCL 2025 Projects</h2>
+          <p class="section-subtitle">
+            Based on Plaksha's 2025 showcase highlights and the official YCL project directory, past entries span hardware, IoT, robotics, and assistive tech.
+          </p>
+        </div>
+        <div class="search-box">
+          <span>🔍</span>
+          <input id="projectSearch" type="search" placeholder="Filter projects &amp; winners..." aria-label="Filter projects" />
+        </div>
+      </div>
+
+      <div id="projectsGrid" class="projects-grid"></div>
+
+      <div class="indexed-wrap" id="indexedWrap">
+        <h3>Other Indexed Builds</h3>
+        <div id="indexedChips" class="chip-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox / Fullscreen Viewer -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lb-topbar">
+      <div class="lb-meta">
+        <span id="lbCounter">01 / 27</span>
+        <small id="lbFilename">ycl-01.jpg</small>
+      </div>
+      <div class="lb-actions">
+        <button id="lbPlayBtn" title="Toggle Slideshow (P)">▶ Play</button>
+        <button id="lbZoomBtn" title="Zoom In/Out (+ / - / 0)">🔍 Zoom</button>
+        <button id="lbCopyBtn" title="Copy Image URL (C)">🔗 Copy Link</button>
+        <a id="lbOpenBtn" class="btn" target="_blank" rel="noopener" title="Open Original in New Tab (O)">↗ Open</a>
+        <button id="lbFullscreenBtn" title="Toggle Fullscreen (F)">⛶ Fullscreen</button>
+        <button id="lbCloseBtn" title="Close (Esc)">✕ Close</button>
+      </div>
+    </div>
+
+    <div class="lb-stage" id="lbStage">
+      <button class="lb-nav lb-prev" id="lbPrevBtn" title="Previous (← / A)">‹</button>
+      <img id="lbImage" src="" alt="" />
+      <button class="lb-nav lb-next" id="lbNextBtn" title="Next (→ / D)">›</button>
+    </div>
+
+    <div class="lb-strip" id="lbStrip"></div>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div id="helpModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="Keyboard Shortcuts">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Keyboard Shortcuts</h2>
+        <button id="closeHelpBtn">✕</button>
+      </div>
+      <div class="shortcut-list">
+        <div class="shortcut-item"><span>Next image</span><span><kbd>→</kbd> / <kbd>D</kbd></span></div>
+        <div class="shortcut-item"><span>Previous image</span><span><kbd>←</kbd> / <kbd>A</kbd></span></div>
+        <div class="shortcut-item"><span>First / Last image</span><span><kbd>Home</kbd> / <kbd>End</kbd></span></div>
+        <div class="shortcut-item"><span>Toggle Fullscreen</span><kbd>F</kbd></div>
+        <div class="shortcut-item"><span>Grid / List view</span><span><kbd>G</kbd> / <kbd>L</kbd></span></div>
+        <div class="shortcut-item"><span>Play / Pause slideshow</span><kbd>P</kbd></div>
+        <div class="shortcut-item"><span>Zoom in / out / reset</span><span><kbd>+</kbd> <kbd>-</kbd> <kbd>0</kbd></span></div>
+        <div class="shortcut-item"><span>Copy image URL</span><kbd>C</kbd></div>
+        <div class="shortcut-item"><span>Open original tab</span><kbd>O</kbd></div>
+        <div class="shortcut-item"><span>Jump to # (01–27)</span><kbd>/</kbd></div>
+        <div class="shortcut-item"><span>Jump to Winners / Projects</span><span><kbd>W</kbd> / <kbd>N</kbd></span></div>
+        <div class="shortcut-item"><span>Show help / Close</span><span><kbd>?</kbd> / <kbd>Esc</kbd></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const TOTAL = 27;
+    const BASE_URL = "https://ycl.atplaksha.in/assets/gallery/ycl-";
+    const EXT = ".jpg";
+
+    // Zero-padded 01-09 and 10-27
+    const images = Array.from({ length: TOTAL }, (_, idx) => {
+      const num = idx + 1;
+      const padded = String(num).padStart(2, "0");
+      const filename = `ycl-${padded}${EXT}`;
+      return {
+        num,
+        padded,
+        filename,
+        url: `${BASE_URL}${padded}${EXT}`
+      };
+    });
+
+    const winners = [
+      {
+        title: "Boticarm",
+        desc: "Affordable prosthetic limbs with advanced sensors and gesture buttons, designed to enhance mobility and independence.",
+        team: "Team Limbsure",
+        members: "Divyam Tayal, Arnav Mittal, Viilakshan Goel & Manthan Varshney",
+        school: "Shiv Nadar School, Faridabad, Haryana"
+      },
+      {
+        title: "Ragi Sifter Machine",
+        desc: "A cost-effective machine to streamline ragi harvesting, reducing time and labor for farmers in the Konkan region.",
+        team: "Team S P M",
+        members: "Yashraj Ravindra Gaonkar & Yash Laxman Khade",
+        school: "SPM School, Ratnagiri, Maharashtra"
+      },
+      {
+        title: "Artificial Hands for Torso People",
+        desc: "Affordable multifunctional artificial hands with a shoulder-activated joystick and Bluetooth control to enhance independence for individuals with disabilities.",
+        team: "Team Idea Engineers",
+        members: "S Shiva Shankar & S Pechi Muthu",
+        school: "AP Model School Gudupalli, Kuppam, Andhra Pradesh"
+      },
+      {
+        title: "Foot Operated Water Tap",
+        desc: "A ₹40 foot-operated tap design to reduce germ spread at public taps in schools, using a wooden structure and spring mechanism.",
+        team: "Team Smart Tap Solution",
+        members: "Hamnah Shabbir & Itoo Barika",
+        school: "Army Goodwill School Wuzur, J&K"
+      },
+      {
+        title: "StepSure",
+        desc: "A self-charging shoe for the visually impaired that uses sensors for object detection and a piezoelectric system to charge with every step.",
+        team: "Team IdeaForge",
+        members: "Sujiit S, Sai Vidhu Shree, Sushanth & Ratan Venkaatesh",
+        school: "Ela Green School, Chengalpattu, Tamil Nadu"
+      }
+    ];
+
+    const projects2025 = [
+      {
+        title: "EcoDrifter",
+        category: "Robotics & Environment",
+        desc: "An autonomous water-surface robot designed to collect floating plastic waste from lakes and rivers, which went on to represent at Genius Olympiad 2025."
+      },
+      {
+        title: "Step & Sense Mats",
+        category: "Assistive Tech",
+        desc: "Interactive sensory and mobility mats built to assist specially-abled children."
+      },
+      {
+        title: "AI-Based Traffic Control System",
+        category: "Smart Infrastructure & AI",
+        desc: "Smart traffic management hardware featuring emergency-vehicle (ambulance) overriding capabilities."
+      },
+      {
+        title: "Agad Bhavatu",
+        category: "HealthTech",
+        desc: "An app-guided health monitoring and awareness system aimed at preventing fatty liver disease in children."
+      },
+      {
+        title: "Accupaint",
+        category: "Automation & Hardware",
+        desc: "An automated wall-painting machine prototype."
+      },
+      {
+        title: "Auto Drainage Cleaner",
+        category: "Civic Hardware",
+        desc: "A mechanical/automated system for clearing urban storm drains."
+      },
+      {
+        title: "Bedbug Robot",
+        category: "Robotics",
+        desc: "A targeted pest-detection and eradication hardware prototype."
+      },
+      {
+        title: "Beyond Sock",
+        category: "Wearable & Assistive Tech",
+        desc: "A smart wearable/assistive footwear prototype."
+      }
+    ];
+
+    const otherIndexedBuilds = [
+      "AI Agrotech",
+      "Arduino For Human",
+      "Arjuna",
+      "Alcohol and Smoke Detection at Bus Stand",
+      "Automatic Water System (AWS)",
+      "All in One Hanger",
+      "Bag with Attached Umbrella",
+      "Biodegradable Pot"
+    ];
+
+    // DOM Elements
+    const galleryEl = document.getElementById("gallery");
+    const winnersGrid = document.getElementById("winnersGrid");
+    const projectsGrid = document.getElementById("projectsGrid");
+    const indexedChips = document.getElementById("indexedChips");
+    const indexedWrap = document.getElementById("indexedWrap");
+    const projectSearch = document.getElementById("projectSearch");
+
+    const gridBtn = document.getElementById("gridBtn");
+    const listBtn = document.getElementById("listBtn");
+    const jumpInput = document.getElementById("jumpInput");
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const slideshowStartBtn = document.getElementById("slideshowStartBtn");
+    const helpBtn = document.getElementById("helpBtn");
+
+    const lightbox = document.getElementById("lightbox");
+    const lbStage = document.getElementById("lbStage");
+    const lbImage = document.getElementById("lbImage");
+    const lbCounter = document.getElementById("lbCounter");
+    const lbFilename = document.getElementById("lbFilename");
+    const lbPrevBtn = document.getElementById("lbPrevBtn");
+    const lbNextBtn = document.getElementById("lbNextBtn");
+    const lbCloseBtn = document.getElementById("lbCloseBtn");
+    const lbFullscreenBtn = document.getElementById("lbFullscreenBtn");
+    const lbPlayBtn = document.getElementById("lbPlayBtn");
+    const lbZoomBtn = document.getElementById("lbZoomBtn");
+    const lbCopyBtn = document.getElementById("lbCopyBtn");
+    const lbOpenBtn = document.getElementById("lbOpenBtn");
+    const lbStrip = document.getElementById("lbStrip");
+
+    const helpModal = document.getElementById("helpModal");
+    const closeHelpBtn = document.getElementById("closeHelpBtn");
+    const toastEl = document.getElementById("toast");
+
+    let currentIndex = 0;
+    let zoomLevel = 1;
+    let slideshowTimer = null;
+    let toastTimer = null;
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2000);
+    }
+
+    // Render Gallery
+    function renderGallery() {
+      const cardFrag = document.createDocumentFragment();
+      const stripFrag = document.createDocumentFragment();
+
+      images.forEach((item, index) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.dataset.index = index;
+
+        card.innerHTML = `
+          <div class="thumb-wrap">
+            <span class="num-pill">#${item.padded}</span>
+            <img src="${item.url}" alt="YCL Photo ${item.padded}" loading="${index < 8 ? "eager" : "lazy"}" />
+            <div class="error-state">
+              <span>Failed to load ${item.filename}</span>
+              <button type="button" class="retry-btn">↻ Retry</button>
+            </div>
+            <div class="card-overlay-actions">
+              <button type="button" class="icon-btn fs-card-btn" title="View Fullscreen">⛶ Fullscreen</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-info">
+              <div class="card-title">Photo ${item.padded}</div>
+              <a class="card-url" href="${item.url}" target="_blank" rel="noopener">${item.url}</a>
+            </div>
+            <div class="card-actions">
+              <button type="button" class="view-btn" title="Open Viewer">View</button>
+              <button type="button" class="copy-btn" title="Copy Link">🔗</button>
+            </div>
+          </div>
+        `;
+
+        const thumbWrap = card.querySelector(".thumb-wrap");
+        const imgEl = thumbWrap.querySelector("img");
+        const retryBtn = card.querySelector(".retry-btn");
+        const fsCardBtn = card.querySelector(".fs-card-btn");
+        const viewBtn = card.querySelector(".view-btn");
+        const copyBtn = card.querySelector(".copy-btn");
+
+        imgEl.addEventListener("error", () => thumbWrap.classList.add("is-error"));
+        imgEl.addEventListener("load", () => thumbWrap.classList.remove("is-error"));
+
+        retryBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          thumbWrap.classList.remove("is-error");
+          imgEl.src = `${item.url}?t=${Date.now()}`;
+        });
+
+        thumbWrap.addEventListener("click", () => openLightbox(index));
+        viewBtn.addEventListener("click", () => openLightbox(index));
+
+        fsCardBtn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          openLightbox(index);
+          await enterFullscreen();
+        });
+
+        copyBtn.addEventListener("click", () => copyText(item.url));
+
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && document.activeElement === card) {
+            e.preventDefault();
+            openLightbox(index);
+          }
+        });
+
+        cardFrag.appendChild(card);
+
+        const stripThumb = document.createElement("div");
+        stripThumb.className = "lb-thumb";
+        stripThumb.title = `#${item.padded} (${item.filename})`;
+        stripThumb.innerHTML = `<img src="${item.url}" alt="Thumb ${item.padded}" loading="lazy" />`;
+        stripThumb.addEventListener("click", () => showSlide(index));
+        stripFrag.appendChild(stripThumb);
+      });
+
+      galleryEl.appendChild(cardFrag);
+      lbStrip.appendChild(stripFrag);
+    }
+
+    // Render Winners & Projects
+    function renderArchive(filterText = "") {
+      const q = filterText.trim().toLowerCase();
+
+      // Winners
+      winnersGrid.innerHTML = "";
+      winners
+        .filter((w) => !q || `${w.title} ${w.desc} ${w.team} ${w.members} ${w.school}`.toLowerCase().includes(q))
+        .forEach((w) => {
+          const el = document.createElement("article");
+          el.className = "winner-card";
+          el.innerHTML = `
+            <div class="winner-top">
+              <span class="winner-badge">🎖️ YCL Winner</span>
+            </div>
+            <h3 class="winner-title">${w.title}</h3>
+            <p class="winner-desc">${w.desc}</p>
+            <div class="winner-meta">
+              <div class="meta-row"><span class="meta-label">Team</span><span>${w.team}</span></div>
+              <div class="meta-row"><span class="meta-label">Members</span><span>${w.members}</span></div>
+              <div class="meta-row"><span class="meta-label">School</span><span>${w.school}</span></div>
+            </div>
+          `;
+          winnersGrid.appendChild(el);
+        });
+
+      // 2025 Notable Projects
+      projectsGrid.innerHTML = "";
+      projects2025
+        .filter((p) => !q || `${p.title} ${p.category} ${p.desc}`.toLowerCase().includes(q))
+        .forEach((p) => {
+          const el = document.createElement("article");
+          el.className = "project-card";
+          el.innerHTML = `
+            <span class="project-tag">${p.category}</span>
+            <h3>${p.title}</h3>
+            <p>${p.desc}</p>
+          `;
+          projectsGrid.appendChild(el);
+        });
+
+      // Other Indexed Builds
+      indexedChips.innerHTML = "";
+      const filteredBuilds = otherIndexedBuilds.filter((b) => !q || b.toLowerCase().includes(q));
+      indexedWrap.classList.toggle("hidden", filteredBuilds.length === 0);
+      filteredBuilds.forEach((b) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = b;
+        indexedChips.appendChild(chip);
+      });
+    }
+
+    projectSearch.addEventListener("input", (e) => renderArchive(e.target.value));
+
+    // View Modes
+    function setView(mode) {
+      if (mode === "list") {
+        galleryEl.classList.remove("grid-view");
+        galleryEl.classList.add("list-view");
+        listBtn.classList.add("active");
+        gridBtn.classList.remove("active");
+      } else {
+        galleryEl.classList.remove("list-view");
+        galleryEl.classList.add("grid-view");
+        gridBtn.classList.add("active");
+        listBtn.classList.remove("active");
+      }
+    }
+
+    gridBtn.addEventListener("click", () => setView("grid"));
+    listBtn.addEventListener("click", () => setView("list"));
+
+    // Lightbox Functions
+    function openLightbox(index) {
+      lightbox.classList.add("open");
+      document.body.style.overflow = "hidden";
+      showSlide(index);
+    }
+
+    function closeLightbox() {
+      stopSlideshow();
+      resetZoom();
+      lightbox.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function showSlide(index) {
+      currentIndex = (index + TOTAL) % TOTAL;
+      const item = images[currentIndex];
+      resetZoom();
+
+      lbImage.src = item.url;
+      lbImage.alt = `YCL Photo ${item.padded}`;
+      lbCounter.textContent = `${item.padded} / ${TOTAL}`;
+      lbFilename.textContent = item.filename;
+      lbOpenBtn.href = item.url;
+
+      const thumbs = lbStrip.children;
+      for (let i = 0; i < thumbs.length; i++) {
+        thumbs[i].classList.toggle("active", i === currentIndex);
+      }
+      if (thumbs[currentIndex]) {
+        thumbs[currentIndex].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+
+      preload((currentIndex + 1) % TOTAL);
+      preload((currentIndex - 1 + TOTAL) % TOTAL);
+    }
+
+    function preload(idx) {
+      const img = new Image();
+      img.src = images[idx].url;
+    }
+
+    function nextSlide() { showSlide(currentIndex + 1); }
+    function prevSlide() { showSlide(currentIndex - 1); }
+
+    // Zoom
+    function applyZoom() {
+      lbImage.style.transform = `scale(${zoomLevel})`;
+      lbImage.classList.toggle("zoomed", zoomLevel > 1);
+      lbZoomBtn.textContent = zoomLevel > 1 ? `🔍 ${Math.round(zoomLevel * 100)}%` : "🔍 Zoom";
+    }
+
+    function resetZoom() {
+      zoomLevel = 1;
+      applyZoom();
+    }
+
+    function toggleZoom() {
+      zoomLevel = zoomLevel === 1 ? 2 : 1;
+      applyZoom();
+    }
+
+    lbImage.addEventListener("click", toggleZoom);
+    lbZoomBtn.addEventListener("click", toggleZoom);
+
+    // Slideshow
+    function startSlideshow() {
+      if (!lightbox.classList.contains("open")) {
+        openLightbox(currentIndex);
+      }
+      stopSlideshow();
+      slideshowTimer = setInterval(nextSlide, 3000);
+      lbPlayBtn.textContent = "⏸ Pause";
+      lbPlayBtn.classList.add("active");
+      showToast("Slideshow started (3s)");
+    }
+
+    function stopSlideshow() {
+      if (slideshowTimer) {
+        clearInterval(slideshowTimer);
+        slideshowTimer = null;
+        lbPlayBtn.textContent = "▶ Play";
+        lbPlayBtn.classList.remove("active");
+      }
+    }
+
+    function toggleSlideshow() {
+      if (slideshowTimer) {
+        stopSlideshow();
+        showToast("Slideshow paused");
+      } else {
+        startSlideshow();
+      }
+    }
+
+    lbPlayBtn.addEventListener("click", toggleSlideshow);
+    slideshowStartBtn.addEventListener("click", () => {
+      openLightbox(0);
+      startSlideshow();
+    });
+
+    // Fullscreen API
+    async function enterFullscreen() {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch {
+        showToast("Fullscreen blocked by browser");
+      }
+    }
+
+    async function toggleFullscreen() {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch {
+        showToast("Fullscreen not supported here");
+      }
+    }
+
+    document.addEventListener("fullscreenchange", () => {
+      const isFs = !!document.fullscreenElement;
+      fullscreenBtn.classList.toggle("active", isFs);
+      lbFullscreenBtn.classList.toggle("active", isFs);
+      fullscreenBtn.textContent = isFs ? "⛶ Exit Fullscreen" : "⛶ Fullscreen";
+      lbFullscreenBtn.textContent = isFs ? "⛶ Exit FS" : "⛶ Fullscreen";
+    });
+
+    fullscreenBtn.addEventListener("click", toggleFullscreen);
+    lbFullscreenBtn.addEventListener("click", toggleFullscreen);
+
+    // Copy Link
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(`Copied: ${text}`);
+      } catch {
+        showToast("Could not copy URL");
+      }
+    }
+
+    lbCopyBtn.addEventListener("click", () => copyText(images[currentIndex].url));
+
+    // Lightbox Controls
+    lbPrevBtn.addEventListener("click", prevSlide);
+    lbNextBtn.addEventListener("click", nextSlide);
+    lbCloseBtn.addEventListener("click", closeLightbox);
+
+    lbStage.addEventListener("click", (e) => {
+      if (e.target === lbStage) closeLightbox();
+    });
+
+    // Touch Swipe
+    let touchStartX = 0;
+    lbStage.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lbStage.addEventListener("touchend", (e) => {
+      const diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        if (diff < 0) nextSlide();
+        else prevSlide();
+      }
+    }, { passive: true });
+
+    // Jump to # Input
+    jumpInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const val = parseInt(jumpInput.value, 10);
+        if (val >= 1 && val <= TOTAL) {
+          openLightbox(val - 1);
+          jumpInput.blur();
+        } else {
+          showToast(`Enter a number from 1 to ${TOTAL}`);
+        }
+      } else if (e.key === "Escape") {
+        jumpInput.blur();
+      }
+    });
+
+    // Help Modal
+    function openHelp() { helpModal.classList.add("open"); }
+    function closeHelp() { helpModal.classList.remove("open"); }
+
+    helpBtn.addEventListener("click", openHelp);
+    closeHelpBtn.addEventListener("click", closeHelp);
+    helpModal.addEventListener("click", (e) => {
+      if (e.target === helpModal) closeHelp();
+    });
+
+    // Global Keyboard Shortcuts
+    document.addEventListener("keydown", (e) => {
+      const tag = document.activeElement?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+      const isLbOpen = lightbox.classList.contains("open");
+      const isHelpOpen = helpModal.classList.contains("open");
+
+      if (e.key === "?" || (e.key.toLowerCase() === "h" && !e.ctrlKey && !e.metaKey)) {
+        e.preventDefault();
+        isHelpOpen ? closeHelp() : openHelp();
+        return;
+      }
+
+      if (e.key === "Escape") {
+        if (isHelpOpen) {
+          closeHelp();
+        } else if (isLbOpen && !document.fullscreenElement) {
+          closeLightbox();
+        }
+        return;
+      }
+
+      if (isHelpOpen) return;
+
+      switch (e.key) {
+        case "f":
+        case "F":
+          e.preventDefault();
+          toggleFullscreen();
+          break;
+
+        case "g":
+        case "G":
+          if (!isLbOpen) setView("grid");
+          break;
+
+        case "l":
+        case "L":
+          if (!isLbOpen) setView("list");
+          break;
+
+        case "w":
+        case "W":
+          if (!isLbOpen) document.getElementById("winners-section").scrollIntoView();
+          break;
+
+        case "n":
+        case "N":
+          if (!isLbOpen) document.getElementById("projects-section").scrollIntoView();
+          break;
+
+        case "/":
+          e.preventDefault();
+          if (isLbOpen) closeLightbox();
+          jumpInput.focus();
+          jumpInput.select();
+          break;
+
+        case "p":
+        case "P":
+          e.preventDefault();
+          toggleSlideshow();
+          break;
+
+        case "ArrowRight":
+        case "d":
+        case "D":
+          if (isLbOpen) {
+            e.preventDefault();
+            nextSlide();
+          }
+          break;
+
+        case "ArrowLeft":
+        case "a":
+        case "A":
+          if (isLbOpen) {
+            e.preventDefault();
+            prevSlide();
+          }
+          break;
+
+        case " ":
+          if (isLbOpen) {
+            e.preventDefault();
+            nextSlide();
+          }
+          break;
+
+        case "Home":
+          if (isLbOpen) {
+            e.preventDefault();
+            showSlide(0);
+          }
+          break;
+
+        case "End":
+          if (isLbOpen) {
+            e.preventDefault();
+            showSlide(TOTAL - 1);
+          }
+          break;
+
+        case "+":
+        case "=":
+          if (isLbOpen) {
+            e.preventDefault();
+            zoomLevel = Math.min(4, +(zoomLevel + 0.5).toFixed(1));
+            applyZoom();
+          }
+          break;
+
+        case "-":
+        case "_":
+          if (isLbOpen) {
+            e.preventDefault();
+            zoomLevel = Math.max(1, +(zoomLevel - 0.5).toFixed(1));
+            applyZoom();
+          }
+          break;
+
+        case "0":
+          if (isLbOpen) {
+            e.preventDefault();
+            resetZoom();
+          }
+          break;
+
+        case "c":
+        case "C":
+          if (isLbOpen && !e.ctrlKey && !e.metaKey) {
+            e.preventDefault();
+            copyText(images[currentIndex].url);
+          }
+          break;
+
+        case "o":
+        case "O":
+          if (isLbOpen) {
+            e.preventDefault();
+            window.open(images[currentIndex].url, "_blank", "noopener");
+          }
+          break;
+      }
+    });
+
+    // Init
+    renderGallery();
+    renderArchive();
+  </script>
+</body>
+</html>
